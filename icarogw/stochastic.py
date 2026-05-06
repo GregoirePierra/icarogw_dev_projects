@@ -121,8 +121,8 @@ def dEdf(Mtot,freqs,eta=0.25,inspiralOnly=False,PN=True,chi=None,approximant=Fal
             if chi1 is None and chi2 is None:
                 chi1, chi2 = 0.0, 0.0
 
-            SPIN1X, SPIN1Y, SPIN1Z = 0.0, 0.0, chi1*cost1
-            SPIN2X, SPIN2Y, SPIN2Z = 0.0, 0.0, chi2*cost2
+            SPIN1X, SPIN1Y, SPIN1Z = 0.0, chi1*np.sqrt(1-cost1**2), chi1*cost1
+            SPIN2X, SPIN2Y, SPIN2Z = 0.0, chi2*np.sqrt(1-cost2**2), chi2*cost2
 
             DISTANCE_MPC = 500.0
             INCLINATION = 0.0
@@ -265,7 +265,7 @@ def precompute_omega_weights(freqs, tmp_min=2., tmp_max=100., N=20000,chimax=Non
 
     return look_up_Om0
 
-def precompute_omega_weights_IBH(freqs, N=20000):
+def precompute_omega_weights_spins(freqs, N=20000):
 
     m1s_drawn = np.random.uniform(2., 100., size=N)
     c_m2s = np.random.uniform(size=N)
@@ -310,7 +310,7 @@ def precompute_omega_weights_IBH(freqs, N=20000):
 
 
 # Define the log likelihood for the SGWB
-def spectral_siren_vanilla_omega_gw_IBH(freqs,look_up_Om0,cbcrate):
+def spectral_siren_vanilla_omega_gw_spins(freqs,look_up_Om0,cbcrate):
     import time
     '''
     This function calculates the stochastic GW background as function of frequency. Note that this rate is not valid in modified gravity with friction terms
